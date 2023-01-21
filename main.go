@@ -25,7 +25,7 @@ func main() {
 
 	doc := getTextFromTestFile("input.txt")
 
-	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc)
+	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n\n %s", doc)
 
 	res := client.callTextCompletion(prompt)
 
