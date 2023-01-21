@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -40,7 +39,7 @@ func main() {
 }
 
 func getTextFromTestFile(fileName string) string {
-	data, err := ioutil.ReadFile("test/" + fileName)
+	data, err := os.ReadFile("test/" + fileName)
 	if err != nil {
 		panic(err)
 	}
