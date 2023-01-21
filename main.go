@@ -98,6 +98,8 @@ func (o *OpenAiClient) callTextCompletion(prompt string) io.ReadCloser {
 		panic(err)
 	}
 
+	writeStringToTestFile(string(promptAsJson), "test.json")
+
 	req, err := http.NewRequest("POST", url, bytes.NewReader(promptAsJson))
 	if err != nil {
 		panic(err)
@@ -137,5 +139,18 @@ func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
 		TopP:             1,
 		FrequencyPenalty: 0,
 		PresencePenalty:  0,
+	}
+}
+
+func writeStringToTestFile(input string, fileName string) {
+	file, err := os.Create(fileName)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+	_, err = file.WriteString(input)
+	if err != nil {
+		panic(err)
 	}
 }
