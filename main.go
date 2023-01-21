@@ -60,7 +60,7 @@ func createTextCompletionRequest(prompt string) TextCompletionsApiRequest {
 		Model:            "text-davinci-003",
 		Prompt:           prompt,
 		Temperature:      0,
-		MaxTokens:        1521,
+		MaxTokens:        20,
 		TopP:             1,
 		FrequencePenalty: 0,
 		PresencePenalty:  0,
