@@ -20,7 +20,13 @@ func main() {
 
 	client := OpenAiClient{apiKey: os.Getenv("OPENAI_API_KEY")}
 
-	prompt := "Write a terraform script that creates an AWS API Gateway that only allows requests from the IP 0.0.0.0"
+	url := "https://spec.openapis.org/oas/latest.html"
+
+	doc := getTextFromSite(url)
+
+	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc)
+
+	fmt.Println(prompt)
 
 	res := client.callTextCompletion(prompt)
 
@@ -29,6 +35,22 @@ func main() {
 	responseString := buf.String()
 
 	fmt.Println(responseString)
+}
+
+func getTextFromSite(url string) string {
+	res, err := http.Get(url)
+	if err != nil {
+		panic(err)
+	}
+
+	if res.StatusCode != 200 {
+		panic(fmt.Sprintf("get text from site error, status %s", res.Status))
+	}
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(res.Body)
+	responseString := buf.String()
+	return responseString
 }
 
 func loadEnvironmentVariables() {
