@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type TextCompletionsApiRequest struct {
+type TextCompletionApiRequest struct {
 	Model            string `json:"model"`
 	Prompt           string `json:"prompt"`
 	Temperature      int    `json:"temperature"`
@@ -55,8 +55,8 @@ func main() {
 	fmt.Println(res)
 }
 
-func createTextCompletionRequest(prompt string) TextCompletionsApiRequest {
-	return TextCompletionsApiRequest{
+func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
+	return TextCompletionApiRequest{
 		Model:            "text-davinci-003",
 		Prompt:           prompt,
 		Temperature:      0,
