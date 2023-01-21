@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
@@ -20,21 +21,38 @@ type TextCompletionApiRequest struct {
 	PresencePenalty  int    `json:"presence_penalty"`
 }
 
+type OpenAiClient struct {
+	apiKey string
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		panic(fmt.Sprintf("error loading .env file: %s", err))
 	}
 
-	openaiApiKey := os.Getenv("OPENAI_API_KEY")
+	client := OpenAiClient{apiKey: os.Getenv("OPENAI_API_KEY")}
+
+	prompt := "Write a terraform script that creates an AWS API Gateway that only allows requests from the IP 0.0.0.0"
+
+	res := client.callTextCompletion(prompt)
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(res)
+	responseString := buf.String()
+
+	fmt.Println(responseString)
+}
+
+func (o *OpenAiClient) callTextCompletion(prompt string) io.ReadCloser {
 
 	client := &http.Client{}
 
 	url := "https://api.openai.com/v1/completions"
 
-	prompt := createTextCompletionRequest("Write a terraform script that creates an AWS API Gateway that only allows requests from the IP 0.0.0.0")
+	tcr := createTextCompletionRequest(prompt)
 
-	promptAsJson, err := json.Marshal(prompt)
+	promptAsJson, err := json.Marshal(tcr)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +63,7 @@ func main() {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", openaiApiKey))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", o.apiKey))
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -56,11 +74,7 @@ func main() {
 		panic(fmt.Errorf("response status %s", res.Status))
 	}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-	responseString := buf.String()
-
-	fmt.Println(responseString)
+	return res.Body
 }
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
