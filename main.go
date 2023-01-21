@@ -39,7 +39,7 @@ func main() {
 		panic(err)
 	}
 
-	req, err := http.NewRequest("GET", url, bytes.NewReader(promptAsJson))
+	req, err := http.NewRequest("POST", url, bytes.NewReader(promptAsJson))
 	if err != nil {
 		panic(err)
 	}
