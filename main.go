@@ -30,6 +30,8 @@ func main() {
 
 	res := client.callTextCompletion(prompt)
 
+	defer res.Close()
+
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(res)
 	responseString := buf.String()
@@ -42,6 +44,8 @@ func getTextFromSite(url string) string {
 	if err != nil {
 		panic(err)
 	}
+
+	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
 		panic(fmt.Sprintf("get text from site error, status %s", res.Status))
