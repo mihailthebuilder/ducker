@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -21,11 +22,11 @@ func main() {
 
 	client := OpenAiClient{apiKey: os.Getenv("OPENAI_API_KEY")}
 
-	url := "https://spec.openapis.org/oas/latest.html"
+	// url := "https://spec.openapis.org/oas/latest.html"
 
-	doc := getTextFromSite(url)
+	doc := getTextFromTestFile("input.txt")
 
-	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc[:500])
+	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc)
 
 	res := client.callTextCompletion(prompt)
 
@@ -36,6 +37,14 @@ func main() {
 	responseString := buf.String()
 
 	fmt.Println(responseString)
+}
+
+func getTextFromTestFile(fileName string) string {
+	data, err := ioutil.ReadFile("test/" + fileName)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
 }
 
 func getTextFromSite(url string) string {
@@ -135,7 +144,7 @@ func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
 		Model:            "text-curie-001",
 		Prompt:           prompt,
 		Temperature:      0,
-		MaxTokens:        20,
+		MaxTokens:        1000,
 		TopP:             1,
 		FrequencyPenalty: 0,
 		PresencePenalty:  0,
