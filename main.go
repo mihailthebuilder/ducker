@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"golang.org/x/net/html"
 )
 
 type OpenAiClient struct {
@@ -44,17 +45,39 @@ func getTextFromSite(url string) string {
 	if err != nil {
 		panic(err)
 	}
-
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
 		panic(fmt.Sprintf("get text from site error, status %s", res.Status))
 	}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-	responseString := buf.String()
-	return responseString
+	doc, err := html.Parse(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var bodyText string
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "body" {
+			var g func(*html.Node)
+			g = func(n *html.Node) {
+				if n.Type == html.TextNode {
+					bodyText += n.Data
+				}
+				for c := n.FirstChild; c != nil; c = c.NextSibling {
+					g(c)
+				}
+			}
+			g(n)
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+
+	return bodyText
 }
 
 func loadEnvironmentVariables() {
