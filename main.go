@@ -25,7 +25,7 @@ func main() {
 
 	doc := getTextFromSite(url)
 
-	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc)
+	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc[:500])
 
 	res := client.callTextCompletion(prompt)
 
@@ -143,7 +143,7 @@ func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
 }
 
 func writeStringToTestFile(input string, fileName string) {
-	file, err := os.Create(fileName)
+	file, err := os.Create("test/" + fileName)
 	if err != nil {
 		panic(err)
 	}

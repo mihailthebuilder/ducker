@@ -1,4 +1,3 @@
 .env
 *.js
-test.txt
-test.json
+test/*
