@@ -58,9 +58,9 @@ func main() {
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(res.Body)
-	newStr := buf.String()
+	responseString := buf.String()
 
-	fmt.Println(newStr)
+	fmt.Println(responseString)
 }
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
