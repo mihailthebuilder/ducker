@@ -11,16 +11,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type TextCompletionApiRequest struct {
-	Model            string `json:"model"`
-	Prompt           string `json:"prompt"`
-	Temperature      int    `json:"temperature"`
-	MaxTokens        int    `json:"max_tokens"`
-	TopP             int    `json:"top_p"`
-	FrequencyPenalty int    `json:"frequency_penalty"`
-	PresencePenalty  int    `json:"presence_penalty"`
-}
-
 type OpenAiClient struct {
 	apiKey string
 }
@@ -75,6 +65,16 @@ func (o *OpenAiClient) callTextCompletion(prompt string) io.ReadCloser {
 	}
 
 	return res.Body
+}
+
+type TextCompletionApiRequest struct {
+	Model            string `json:"model"`
+	Prompt           string `json:"prompt"`
+	Temperature      int    `json:"temperature"`
+	MaxTokens        int    `json:"max_tokens"`
+	TopP             int    `json:"top_p"`
+	FrequencyPenalty int    `json:"frequency_penalty"`
+	PresencePenalty  int    `json:"presence_penalty"`
 }
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
