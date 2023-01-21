@@ -56,7 +56,11 @@ func main() {
 		panic(fmt.Errorf("response status %s", res.Status))
 	}
 
-	fmt.Println(res)
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(res.Body)
+	newStr := buf.String()
+
+	fmt.Println(newStr)
 }
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
