@@ -23,7 +23,7 @@ type TextCompletionApiRequest struct {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		panic("Error loading .env file")
+		panic(fmt.Sprintf("error loading .env file: %s", err))
 	}
 
 	openaiApiKey := os.Getenv("OPENAI_API_KEY")
@@ -50,6 +50,10 @@ func main() {
 	res, err := client.Do(req)
 	if err != nil {
 		panic(err)
+	}
+
+	if res.StatusCode != 200 {
+		panic(fmt.Errorf("response status %s", res.Status))
 	}
 
 	fmt.Println(res)
