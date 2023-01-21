@@ -16,7 +16,7 @@ type TextCompletionsApiRequest struct {
 	Temperature      int    `json:"temperature"`
 	MaxTokens        int    `json:"max_tokens"`
 	TopP             int    `json:"top_p"`
-	FrequencePenalty int    `json:"frequence_penalty"`
+	FrequencyPenalty int    `json:"frequency_penalty"`
 	PresencePenalty  int    `json:"presence_penalty"`
 }
 
@@ -62,7 +62,7 @@ func createTextCompletionRequest(prompt string) TextCompletionsApiRequest {
 		Temperature:      0,
 		MaxTokens:        20,
 		TopP:             1,
-		FrequencePenalty: 0,
+		FrequencyPenalty: 0,
 		PresencePenalty:  0,
 	}
 }
