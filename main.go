@@ -61,7 +61,7 @@ func main() {
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
 	return TextCompletionApiRequest{
-		Model:            "text-davinci-003",
+		Model:            "text-curie-001",
 		Prompt:           prompt,
 		Temperature:      0,
 		MaxTokens:        20,
