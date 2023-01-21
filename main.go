@@ -16,10 +16,7 @@ type OpenAiClient struct {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(fmt.Sprintf("error loading .env file: %s", err))
-	}
+	loadEnvironmentVariables()
 
 	client := OpenAiClient{apiKey: os.Getenv("OPENAI_API_KEY")}
 
@@ -32,6 +29,13 @@ func main() {
 	responseString := buf.String()
 
 	fmt.Println(responseString)
+}
+
+func loadEnvironmentVariables() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(fmt.Sprintf("error loading .env file: %s", err))
+	}
 }
 
 func (o *OpenAiClient) callTextCompletion(prompt string) io.ReadCloser {
