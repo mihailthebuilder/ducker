@@ -27,8 +27,6 @@ func main() {
 
 	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n %s", doc)
 
-	fmt.Println(prompt)
-
 	res := client.callTextCompletion(prompt)
 
 	defer res.Close()
