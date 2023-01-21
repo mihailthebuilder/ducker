@@ -25,7 +25,7 @@ func main() {
 
 	doc := getTextFromTestFile("input.txt")
 
-	prompt := fmt.Sprintf("Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n\n %s", doc)
+	prompt := fmt.Sprintf(`Question: What data types are supported in the OpenAPI specification? Base your answer on the text below:\n"\n %s\n"`, doc)
 
 	res := client.callTextCompletion(prompt)
 
@@ -140,7 +140,7 @@ type TextCompletionApiRequest struct {
 
 func createTextCompletionRequest(prompt string) TextCompletionApiRequest {
 	return TextCompletionApiRequest{
-		Model:            "text-curie-001",
+		Model:            "text-davinci-003",
 		Prompt:           prompt,
 		Temperature:      0,
 		MaxTokens:        1000,
